@@ -5,7 +5,7 @@
   <div>
     
     <p>
-      <a href="https://google.com.br">Clique aqui!!</a>
+      <a href="https://google.com.br"><p>Clique aqui!!</p></a>
     </p>
   </div>
 </html>
