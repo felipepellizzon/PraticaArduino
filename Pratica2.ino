@@ -1,7 +1,7 @@
 // Initialize Pins
 int analogPin = 2;
 int chargePin = 8;
-int dischargePin = 7; //speeds up discharging process, not necessary though
+int dischargePin = 7;
 
 // Initialize Resistor
 int resistorValue = 10000;
@@ -23,31 +23,45 @@ void setup()
 
 void loop()
 {
-  digitalWrite(chargePin, HIGH); // Begins charging the capacitor
-  startTime = millis(); // Begins the timer
+  digitalWrite(chargePin, HIGH); // Carrega capacitor
+  startTime = millis(); // Start no tempo
   
   while(analogRead(analogPin) < 648)
   {       
-    // Does nothing until capacitor reaches 63.2% of total voltage
+    // nao faz nada ate carregar o capacitor em 63,2% da capacidade dele
     Serial.println(elapsedTime); 
   }
 
-  elapsedTime= millis() - startTime; // Determines how much time it took to charge capacitor
-  //microFarads = ((float)elapsedTime / resistorValue) * 1000;
+  elapsedTime= millis() - startTime; // Tempo para carregar o capacitor
+  microFarads = ((float)elapsedTime / resistorValue) * 1000;
   Serial.println(elapsedTime);       
-  //Serial.println(" mS    ");         
+  Serial.println(" mS    ");   
+  
+    if (microFarads > 1) 
+  {
+    Serial.print((long)microFarads);       
+    Serial.println(" microFarads");         
+  }
+
+  else
+  {
+    nanoFarads = microFarads * 1000.0;      
+    Serial.print((long)nanoFarads);         
+    Serial.println(" nanoFarads");          
+    delay(500); 
+  }
 
   delay(500);
-  digitalWrite(chargePin, LOW); // Stops charging capacitor
+  digitalWrite(chargePin, LOW); // Para de carregar o capacitor
   pinMode(dischargePin, OUTPUT); 
-  digitalWrite(dischargePin, LOW); // Allows capacitor to discharge    
+  digitalWrite(dischargePin, LOW); // Processo de descarga   
   while(analogRead(analogPin) > 0)
   {
-    // Do nothing until capacitor is discharged 
+    // Somente para descarregar o capacitor 
        
   }
   Serial.println(elapsedTime); 
   Serial.end();
-  pinMode(dischargePin, INPUT); // Prevents capacitor from discharging 
+  pinMode(dischargePin, INPUT); // Prevenção para não carregar o capacitor
    
 }
